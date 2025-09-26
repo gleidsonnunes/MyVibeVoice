@@ -1,47 +1,3 @@
-Hugging Face's logo
-Hugging Face
-Models
-Datasets
-Spaces
-Community
-Docs
-Enterprise
-Pricing
-
-
-
-Spaces:
-
-gleidsonnunes
-/
-VibeVoice
-
-private
-
-Logs
-App
-Files
-Community
-Settings
-VibeVoice
-/
-app.py
-
-gleidsonnunes's picture
-gleidsonnunes
-Update app.py
-a6ef39d
-verified
-1 minute ago
-raw
-
-Copy download link
-history
-blame
-edit
-delete
-
-15.3 kB
 import os
 import time
 import numpy as np
@@ -357,10 +313,7 @@ def create_demo_interface(demo_instance: VibeVoiceDemo):
             return text_input_script
 
         def generate_podcast_wrapper(num_speakers, uploaded_file = None, text_input_script = None, *speakers_and_params):
-            task = Task.init(
-                project_name='Vibevoice',
-                task_name=f'vibevoice'
-            )
+            task = Task.current_task
             
             script_content = get_script_content(uploaded_file, text_input_script)
 
