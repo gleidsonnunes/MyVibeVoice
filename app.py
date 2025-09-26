@@ -311,9 +311,12 @@ def create_demo_interface(demo_instance: VibeVoiceDemo):
                     gr.Warning(f"Error reading uploaded file: {e}. Using text input instead.")
                     return text_input_script
             return text_input_script
-
-        def generate_podcast_wrapper(num_speakers, uploaded_file = None, text_input_script = None, *speakers_and_params):
-            task = Task.current_task
+            
+        def generate_podcast_wrapper(num_speakers, uploaded_file=None, text_input_script=None, *speakers_and_params):    
+            task = Task.init(
+                project_name='Vibevoice',
+                task_name=f'vibevoice'
+            )
             
             script_content = get_script_content(uploaded_file, text_input_script)
 
@@ -335,10 +338,12 @@ def create_demo_interface(demo_instance: VibeVoiceDemo):
                     speaker_4=speakers[3],
                     cfg_scale=cfg_scale_val,
                 )
+                
                 task.upload_artifact(
                     name='Audio Gerado',
                     artifact_object=audio
                 )
+                
                 task.close()
                 return audio, log
             except Exception as e:
