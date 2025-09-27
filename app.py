@@ -313,15 +313,17 @@ def create_demo_interface(demo_instance: VibeVoiceDemo):
             return text_input_script
             
         def generate_podcast_wrapper(num_speakers, uploaded_file=None, text_input_script=None, *speakers_and_params):    
-            task = Task.init(
-                project_name='Vibevoice',
-                task_name=f'vibevoice'
-            )
+            task = Task.current_task
+            if task is None:
+                task = Task.init(
+                    project_name='Vibevoice',
+                    task_name=f'vibevoice'
+                )
             
             script_content = get_script_content(uploaded_file, text_input_script)
 
             if not script_content.strip():
-                task.mark_as_failed(status_reason="❌ Error: Please provide a script either by uploading a file or typing directly.", status_message=None)
+                task.mark_failed(status_reason="❌ Error: Please provide a script either by uploading a file or typing directly.", status_message=None)
                 task.close()
                 return None, "❌ Error: Please provide a script either by uploading a file or typing directly.", None
 
@@ -369,7 +371,7 @@ def create_demo_interface(demo_instance: VibeVoiceDemo):
                 return audio_tuple, log
             except Exception as e:
                 traceback.print_exc()
-                task.mark_as_failed(status_reason=None, status_message=str(e))
+                task.mark_failed(status_reason=None, status_message=str(e))
                 task.close()
                 return None, f"❌ Error: {str(e)}"
 
