@@ -314,24 +314,27 @@ def create_demo_interface(demo_instance: VibeVoiceDemo):
             
         def generate_podcast_wrapper(num_speakers, uploaded_file=None, text_input_script=None, *speakers_and_params):    
             task = Task.current_task
+            i = False
             if task is None:
                 task = Task.init(
                     project_name='Vibevoice',
                     task_name=f'vibevoice'
                 )
+                i = True
             
             script_content = get_script_content(uploaded_file, text_input_script)
 
             if not script_content.strip():
-                task.mark_failed(status_reason="❌ Error: Please provide a script either by uploading a file or typing directly.", status_message=None)
-                task.close()
-                return None, "❌ Error: Please provide a script either by uploading a file or typing directly.", None
+                task.mark_failed(status_reason="❌ Error: Please provide a script either by uploading a file or typing directly.")
+                if i:
+                    task.close()
+                return None, "❌ Error: Please provide a script either by uploading a file or typing directly."
 
             try:
                 speakers = speakers_and_params[:4]
                 cfg_scale_val = speakers_and_params[4]
 
-                audio, log = demo_instance.generate_podcast( # generate_podcast now returns (audio, log)
+                audio_tuple, log = demo_instance.generate_podcast( # generate_podcast now returns (audio, log)
                     num_speakers=int(num_speakers),
                     script=script_content, # Pass the resolved script content
                     speaker_1=speakers[0],
@@ -365,14 +368,15 @@ def create_demo_interface(demo_instance: VibeVoiceDemo):
                         os.remove(wav_path)
                 
                 # ---------------------------------------------
-                
-                task.close()
+                if i:
+                    task.close()
                 # Retorna a tupla original para o Gradio, que fará a transmissão HTTP/API
                 return audio_tuple, log
             except Exception as e:
                 traceback.print_exc()
-                task.mark_failed(status_reason=None, status_message=str(e))
-                task.close()
+                task.mark_failed(status_message=f"Error: {str(e)}")
+                if i:
+                    task.close()
                 return None, f"❌ Error: {str(e)}"
 
 
