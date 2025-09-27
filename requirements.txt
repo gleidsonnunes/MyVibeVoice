@@ -2,4 +2,5 @@
 soundfile
 hf_xet
 mcp
+clearml
 vibevoice==0.0.1
