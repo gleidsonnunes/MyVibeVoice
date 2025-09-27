@@ -313,7 +313,7 @@ def create_demo_interface(demo_instance: VibeVoiceDemo):
             return text_input_script
             
         def generate_podcast_wrapper(num_speakers, uploaded_file=None, text_input_script=None, *speakers_and_params):    
-            task = Task.current_task
+            task = Task.current_task()
             i = False
             if task is None:
                 task = Task.init(
