@@ -358,8 +358,8 @@ def create_demo_interface(demo_instance: VibeVoiceDemo):
                     # 2. Faz o upload do ARQUIVO WAV real para o ClearML
                     task.upload_artifact(
                         name=f'Audio Gerado {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}',
-                        artifact_object=wav_path, # Agora é o caminho do arquivo .wav
-                        auto_type=True
+                        artifact_object=wav_path,
+                        auto_pickle=True
                     )
                 finally:
                     # 3. Limpa o arquivo temporário
