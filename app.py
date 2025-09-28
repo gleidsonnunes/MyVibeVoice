@@ -345,26 +345,11 @@ def create_demo_interface(demo_instance: VibeVoiceDemo):
                 
                 # --- CORREÇÃO: SALVAR O WAV PARA O CLEARML ---
                 sample_rate, audio_data = audio_tuple
-
-                # Cria um arquivo WAV temporário
-                wav_path = None
-                try:
-                    # Usa tempfile.NamedTemporaryFile para garantir que o arquivo seja único
-                    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmpfile:
-                        wav_path = tmpfile.name
-                        # Salva o array NumPy como um arquivo WAV usando soundfile (sf)
-                        sf.write(wav_path, audio_data, sample_rate) 
-                    
-                    # 2. Faz o upload do ARQUIVO WAV real para o ClearML
-                    task.upload_artifact(
-                        name=f'Audio Gerado {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}',
-                        artifact_object=wav_path,
-                        auto_pickle=True
-                    )
-                finally:
-                    # 3. Limpa o arquivo temporário
-                    if wav_path and os.path.exists(wav_path):
-                        os.remove(wav_path)
+                
+                task.upload_artifact(
+                    name=f'Audio Gerado {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}',
+                    artifact_object=audio_tuple
+                )
                 
                 # ---------------------------------------------
                 if i:
