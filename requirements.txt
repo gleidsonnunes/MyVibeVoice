@@ -1,6 +1,5 @@
 --extra-index-url https://gleidson-nunes.ddns.net:60/pypi/p/simple
 soundfile
-hf_xet
 mcp
 clearml
 vibevoice==0.0.1
