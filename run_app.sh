@@ -2,12 +2,12 @@
 
 # Update package lists
 echo "Updating package lists..."
-sudo apt-get update
+apt-get update
 
 # Install system packages if packages.txt exists
 if [ -f "packages.txt" ]; then
     echo "Installing system packages from packages.txt..."
-    xargs sudo apt-get install -y < packages.txt
+    xargs apt-get install -y < packages.txt
 else
     echo "packages.txt not found, skipping system package installation."
 fi
@@ -25,7 +25,7 @@ if ! command -v cloudflared &> /dev/null; then
     echo "Installing cloudflared..."
     wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -O cloudflared
     chmod +x cloudflared
-    sudo mv cloudflared /usr/local/bin/
+    mv cloudflared /usr/local/bin/
 fi
 
 # Run the Python application in the background
