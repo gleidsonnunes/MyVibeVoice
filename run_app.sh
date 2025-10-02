@@ -28,13 +28,13 @@ if ! command -v cloudflared &> /dev/null; then
     mv cloudflared /usr/local/bin/
 fi
 
-# Run the Python application in the background
-echo "Starting the application..."
-nohup python app.py --port 7860 > app.log 2>&1 &
-
 # Start cloudflared tunnel in the background
 echo "Starting cloudflared tunnel..."
 nohup cloudflared tunnel --url http://localhost:7860 > cloudflared.log 2>&1 &
+
+# Run the Python application in the background
+echo "Starting the application..."
+python app.py --port 7860
 
 echo "Application and cloudflared tunnel are running in the background."
 echo "Check app.log and cloudflared.log for logs."
